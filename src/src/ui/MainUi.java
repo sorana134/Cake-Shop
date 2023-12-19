@@ -100,10 +100,10 @@ public class MainUi {
                    removeCake();
                     break;
                 case 6:
-                    service.showAvailableOrders();
+                    service.showAvailableOrders(true);
                     break;
                 case 7:
-                    service.showFinishedOrders();
+                    service.showFinishedOrders(true);
                     break;
                 case 8:
                     System.out.println("Enter cake size: ");

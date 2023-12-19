@@ -6,12 +6,12 @@ import domain.Unique;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import service.Service;
 
-import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -112,31 +112,48 @@ public class OrderController {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add New Order");
         dialog.setHeaderText(null);
-        dialog.setContentText("Enter order details (CakeID Price DueDate):");
+        dialog.setContentText("Enter order details (OrderID CakeID Price DueDate):");
 
         // Show the dialog and wait for the user's response
         dialog.showAndWait().ifPresent(input -> {
             // Split the input into CakeID, Price, and DueDate
             String[] parts = input.split(" ");
-            if (parts.length == 3) {
+            if (parts.length == 4) {
                 try {
                     // Parse the input values
-                    int cakeId = Integer.parseInt(parts[0]);
-                    double price = Double.parseDouble(parts[1]);
-                    LocalDate dueDate = LocalDate.parse(parts[2]);
-
-                    // Create a new empty row for the order table
+                    int orderId = Integer.parseInt(parts[0]);
+                    int cakeId = Integer.parseInt(parts[1]);
+                    double price = Double.parseDouble(parts[2]);
+                    LocalDate dueDate = LocalDate.parse(parts[3]);
                     Map<Number, Cake> cakeList = new HashMap<>();
+
                     Cake cake = service.getCake(cakeId);
+                    if (cake == null) {
+
+                        TextInputDialog cakeDialog = new TextInputDialog();
+                        cakeDialog.setTitle("Add New Cake");
+                        cakeDialog.setHeaderText(null);
+                        cakeDialog.setContentText("Enter cake details (CakeFlavour, CakeSize):");
+
+                        cakeDialog.showAndWait().ifPresent(cakeInput -> {
+                            String[] cakeParts = cakeInput.split(" ");
+                            if (cakeParts.length == 2) {
+                                String cakeName = cakeParts[0];
+                                String cakesize = cakeParts[1];
+                                Cake newCake = new Cake(cakeId, cakeName, cakesize);
+                                service.addCake(newCake);
+                            }
+                        });
+                    }
+                    cake=service.getCake(cakeId);
                     cakeList.put(cakeId, cake);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date parsedDate = dateFormat.parse(String.valueOf(dueDate));
 
                     Orders newOrder = new Orders(true, price, false, parsedDate, cakeId, cakeList);
+                    newOrder.setId(orderId);
                     service.addOrder(newOrder);
                     orderTableView.getItems().add(newOrder);
-
-                    // Select the last row for editing
                     orderTableView.getSelectionModel().select(newOrder);
                     orderTableView.edit(orderTableView.getItems().indexOf(newOrder), orderTableView.getColumns().get(0));
 
@@ -221,17 +238,86 @@ public class OrderController {
     }
 
     @FXML
-    private void handleFinishedButton() {
-        // Handle the finished button action
+    private void handlefinishedButton(ActionEvent event) {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter true for showing finished false for otherwise");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Please enter the state:");
+
+
+        dialog.showAndWait().ifPresent(this::updateTableState);
+    }
+
+    private void updateTableState(String avbl) {
+
+
+        if(avbl.equalsIgnoreCase("all"))
+        {
+            populateOrdersTable();
+        }
+        else
+        {
+            Map<Number, Orders> filteredCakes = service.showFinishedOrders(Boolean.parseBoolean(avbl));
+            orderTableView.getItems().clear();
+            orderTableView.getItems().addAll(filteredCakes.values());
+        }
+
     }
 
     @FXML
-    private void handleAvailableButton() {
-        // Handle the available button action
+    private void handleAvailableButton(ActionEvent event) {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter true for showing available false for otherwise");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Please enter the state:");
+
+
+        dialog.showAndWait().ifPresent(this::updateTableAvbl);
+    }
+
+    private void updateTableAvbl(String avbl) {
+
+
+        if(avbl.equalsIgnoreCase("all"))
+        {
+            populateOrdersTable();
+        }
+        else
+        {
+            Map<Number, Orders> filteredCakes = service.showAvailableOrders(Boolean.parseBoolean(avbl));
+            orderTableView.getItems().clear();
+            orderTableView.getItems().addAll(filteredCakes.values());
+        }
+
     }
 
     @FXML
     private void handlePricingButton() {
-        // Handle the pricing button action
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter the price");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Please enter the state:");
+
+
+        dialog.showAndWait().ifPresent(this::upDatePrice);
     }
+    private void upDatePrice(String avbl) {
+
+
+        if(avbl.equalsIgnoreCase("all"))
+        {
+            populateOrdersTable();
+        }
+        else
+        {
+            Map<Number, Orders> filteredCakes = service.showOrdersCheaperThan(Double.parseDouble(avbl));
+            orderTableView.getItems().clear();
+            orderTableView.getItems().addAll(filteredCakes.values());
+        }
+
+    }
+
+
 }

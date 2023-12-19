@@ -10,7 +10,6 @@ import validators.OrderValidator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -121,31 +120,31 @@ public class Service {
     }
 
     //using streams shows all orders that are available
-    public void showAvailableOrders() {
+    public Map<Number, Orders> showAvailableOrders(boolean disp) {
 
             Map<Number, Orders> orders = (Map<Number, Orders>) Orderrepository.getAll().values().stream()
                     .filter(x -> x instanceof Orders)
                     .map(x -> (Orders) x).collect(Collectors.toMap(Orders::getId, x -> x));
-           Map<Number, Orders>filtered=orders.values().stream().filter(x-> x.getIsAvailable()).collect(Collectors.toMap(Orders::getId, x -> x));
+           Map<Number, Orders>filtered=orders.values().stream().filter(x-> x.getIsAvailable()==disp).collect(Collectors.toMap(Orders::getId, x -> x));
             for (Orders order : filtered.values()) {
                 System.out.println(order.toString());
             }
 
 
-
+        return filtered;
     }
-    public void showFinishedOrders() {
+    public Map<Number, Orders> showFinishedOrders(boolean ok) {
 
         Map<Number, Orders> orders = (Map<Number, Orders>) Orderrepository.getAll().values().stream()
                 .filter(x -> x instanceof Orders)
                 .map(x -> (Orders) x).collect(Collectors.toMap(Orders::getId, x -> x));
-        Map<Number, Orders>filtered=orders.values().stream().filter(x-> x.getIsDone()).collect(Collectors.toMap(Orders::getId, x -> x));
+        Map<Number, Orders>filtered=orders.values().stream().filter(x-> x.getIsDone()==ok).collect(Collectors.toMap(Orders::getId, x -> x));
         for (Orders order : filtered.values()) {
             System.out.println(order.toString());
         }
 
 
-
+        return filtered;
     }
     //show cakes of a certain size
     public Map<Number, Cake> showCakesOfSize(String size) {
@@ -173,15 +172,19 @@ public class Service {
         return filtered;
     }
     //show orders cheaper than a certain price
-    public void showOrdersCheaperThan(double price) {
+    public Map<Number, Orders> showOrdersCheaperThan(double price) {
 
         Map<Number, Orders> orders = (Map<Number, Orders>) Orderrepository.getAll().values().stream()
                 .filter(x -> x instanceof Orders)
                 .map(x -> (Orders) x).collect(Collectors.toMap(Orders::getId, x -> x));
         Map<Number, Orders> filtered = orders.values().stream().filter(x -> x.getPrice() < price).collect(Collectors.toMap(Orders::getId, x -> x));
+       System.out.println("AAAAAAAAAAAAAa");
+        System.out.println('\n');
+
         for (Orders order : filtered.values()) {
             System.out.println(order.toString());
         }
+        return filtered;
     }
 
 

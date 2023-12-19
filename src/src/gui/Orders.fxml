@@ -20,8 +20,8 @@
         </columns>
       </TableView>
        <Button layoutX="263.0" layoutY="266.0" mnemonicParsing="false"  onAction="#uptd" prefHeight="24.0" prefWidth="78.0" text="Update" />
-      <Button layoutX="104.0" layoutY="315.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="78.0" text="Finished" />
-      <Button layoutX="261.0" layoutY="315.0" mnemonicParsing="false" text="Available" />
-      <Button layoutX="420.0" layoutY="315.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="78.0" text="Pricing" />
+      <Button layoutX="104.0" layoutY="315.0" mnemonicParsing="false" onAction="#handlefinishedButton" prefHeight="24.0" prefWidth="78.0" text="Finished" />
+      <Button layoutX="261.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleAvailableButton"  text="Available" />
+      <Button layoutX="420.0" layoutY="315.0" mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="24.0" prefWidth="78.0" text="Pricing" />
    </children>
 </AnchorPane>
