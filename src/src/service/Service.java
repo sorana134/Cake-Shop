@@ -10,9 +10,7 @@ import validators.OrderValidator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -79,6 +77,9 @@ public class Service {
     public void updateCake(int id, Cake cake) {
         Cakerepository.update(id, cake);
     }
+    public void removeCake(Cake cake) {
+       Cakerepository.remove(cake);
+    }
     public Cake getCake(int id) {
         return (Cake) Cakerepository.get(id);
     }
@@ -129,26 +130,29 @@ public class Service {
 
     }
     //show cakes of a certain size
-    public void showCakesOfSize(String size) {
+    public Map<Number, Cake> showCakesOfSize(String size) {
 
         Map<Number, Cake> cakes = (Map<Number, Cake>) Cakerepository.getAll().values().stream()
                 .filter(x -> x instanceof Cake)
                 .map(x -> (Cake) x).collect(Collectors.toMap(Cake::getId, x -> x));
-        Map<Number, Cake> filtered = cakes.values().stream().filter(x -> x.getSize().equals(size)).collect(Collectors.toMap(Cake::getId, x -> x));
+        Map<Number, Cake> filtered = cakes.values().stream().filter(x -> x.getSize().equalsIgnoreCase(size)).collect(Collectors.toMap(Cake::getId, x -> x));
         for (Cake cake : filtered.values()) {
             System.out.println(cake.toString());
         }
+      System.out.println(filtered);
+        return filtered;
     }
     //show cakes of a certain flavour
-    public void showCakesOfFlavour(String flavour) {
+    public Map<Number, Cake> showCakesOfFlavour(String flavour) {
 
         Map<Number, Cake> cakes = (Map<Number, Cake>) Cakerepository.getAll().values().stream()
                 .filter(x -> x instanceof Cake)
                 .map(x -> (Cake) x).collect(Collectors.toMap(Cake::getId, x -> x));
-        Map<Number, Cake> filtered = cakes.values().stream().filter(x -> x.getFlavour().equals(flavour)).collect(Collectors.toMap(Cake::getId, x -> x));
+        Map<Number, Cake> filtered = cakes.values().stream().filter(x -> x.getFlavour().equalsIgnoreCase(flavour)).collect(Collectors.toMap(Cake::getId, x -> x));
         for (Cake cake : filtered.values()) {
             System.out.println(cake.toString());
         }
+        return filtered;
     }
     //show orders cheaper than a certain price
     public void showOrdersCheaperThan(double price) {

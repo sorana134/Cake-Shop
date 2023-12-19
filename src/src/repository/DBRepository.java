@@ -28,7 +28,7 @@ public class DBRepository implements Repository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        innitTables();
+
 
 
     }

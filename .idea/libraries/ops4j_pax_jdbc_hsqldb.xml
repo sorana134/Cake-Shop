@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ops4j.pax.jdbc.hsqldb" type="repository">
+    <properties maven-id="org.ops4j.pax.jdbc:pax-jdbc-hsqldb:1.5.3" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/ops4j/pax/jdbc/pax-jdbc-hsqldb/1.5.3/pax-jdbc-hsqldb-1.5.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ops4j/pax/jdbc/pax-jdbc-common/1.5.3/pax-jdbc-common-1.5.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hsqldb/hsqldb/2.5.2/hsqldb-2.5.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

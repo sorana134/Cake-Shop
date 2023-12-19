@@ -19,13 +19,13 @@ public class Main extends Application {
         Service service = new Service(repo, repo1);
         CakeController controller = new CakeController(service);
 
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Orders.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Cakes.fxml"));
         loader.setController(controller);
 
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.show();
+        controller.populateTable();
     }
 
     public static void main(String[] args) {

@@ -20,6 +20,10 @@ public class Cake implements Unique<Number>, Serializable {
 
     }
 
+    public Cake() {
+
+    }
+
     //getters and setters
     public String getFlavour(){
         return flavour;
