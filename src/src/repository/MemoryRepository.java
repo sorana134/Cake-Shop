@@ -42,7 +42,7 @@ public class MemoryRepository<T extends Unique, U> implements Repository<T, U> {
     }
 
     @Override
-    public Map<Number, T> getAll() {
+    public  Map<Number, T> getAll() {
         Map<Number, T> objectMap = new HashMap<>();
         for (U id : data.keySet()) {
             objectMap.put((Number) id, data.get(id));

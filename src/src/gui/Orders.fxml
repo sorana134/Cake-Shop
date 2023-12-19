@@ -5,20 +5,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="domain.Orders">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="103.0" layoutY="347.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="75.0" text="Order" />
-      <Button layoutX="423.0" layoutY="347.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="75.0" text="Delete" />
-      <TableView layoutX="103.0" layoutY="14.0" prefHeight="328.0" prefWidth="395.0">
+      <Button layoutX="103.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleOrderButton" prefHeight="24.0" prefWidth="78.0" text="Order" />
+      <Button layoutX="420.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleDeleteButton" prefHeight="24.0" prefWidth="78.0" text="Delete" />
+       <TableView fx:id="orderTableView" layoutX="56.0" layoutY="14.0" prefHeight="232.0" prefWidth="489.0">
         <columns>
           <TableColumn prefWidth="75.0" text="ID" />
           <TableColumn prefWidth="75.0" text="Due Date" />
             <TableColumn prefWidth="75.0" text="Status" />
             <TableColumn prefWidth="75.0" text="Cake " />
             <TableColumn prefWidth="92.0" text="Availability" />
+            <TableColumn prefWidth="92.0" text="Price" />
         </columns>
       </TableView>
-      <Button layoutX="263.0" layoutY="347.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="75.0" text="Update" />
+       <Button layoutX="263.0" layoutY="266.0" mnemonicParsing="false"  onAction="#uptd" prefHeight="24.0" prefWidth="78.0" text="Update" />
+      <Button layoutX="104.0" layoutY="315.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="78.0" text="Finished" />
+      <Button layoutX="261.0" layoutY="315.0" mnemonicParsing="false" text="Available" />
+      <Button layoutX="420.0" layoutY="315.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="78.0" text="Pricing" />
    </children>
 </AnchorPane>

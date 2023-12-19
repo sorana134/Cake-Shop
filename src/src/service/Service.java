@@ -10,13 +10,14 @@ import validators.OrderValidator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class Service {
     protected Repository Cakerepository;
-    protected Repository Orderrepository;
+    protected static Repository Orderrepository;
     public void serviceType() throws FileNotFoundException {
         Properties properties = new Properties();
         try (FileInputStream input = new FileInputStream("settings.properties")) {
@@ -83,9 +84,7 @@ public class Service {
     public Cake getCake(int id) {
         return (Cake) Cakerepository.get(id);
     }
-    public Map<Number, Cake> getAllCakes() {
-        return Cakerepository.getAll();
-    }
+
     //CRUD OPERATIONS FOR ORDER
     public void addOrder(Orders order) {
         Orderrepository.add(order);
@@ -99,8 +98,27 @@ public class Service {
     public Orders getOrder(int id) {
         return (Orders) Orderrepository.get(id);
     }
-    public Map<Number, Unique> getAllOrders() {
+    public  Map<Number, Unique> getAll() {
         return Orderrepository.getAll();}
+    public Map<Number, Orders>getAllOrders()
+
+    {
+        Map <Number, Unique>all=Orderrepository.getAll();
+
+        Map<Number, Orders> Orders = (Map<Number, Orders>) Orderrepository.getAll().values().stream()
+                .filter(x -> x instanceof Orders)
+                .map(x -> (Orders) x).collect(Collectors.toMap(domain.Orders::getId, x -> x));
+        return Orders;
+    }
+    public Map<Number, Cake> getAllCakes()
+    {
+        Map<Number, Cake> cakes = (Map<Number, Cake>) Cakerepository.getAll().values().stream()
+                .filter(x -> x instanceof Cake)
+                .map(x -> (Cake) x).collect(Collectors.toMap(Cake::getId, x -> x));
+        return cakes;
+
+
+    }
 
     //using streams shows all orders that are available
     public void showAvailableOrders() {

@@ -187,7 +187,7 @@ public class MainUi {
         service.getAllOrders();
 
        //only show orders
-        Map<Number, Unique> orders = service.getAllOrders();
+        Map<Number, Orders> orders = service.getAllOrders();
         for (Unique order : orders.values()) {
            if (order instanceof Orders) {
                 System.out.println(order.toString());

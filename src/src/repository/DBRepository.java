@@ -324,28 +324,27 @@ public class DBRepository implements Repository{
     }
     public Map<Integer, Orders> getAllOrders() {
         Map<Integer, Orders> ordersMap = new HashMap<>();
+        Map<Integer, Cake> cakes = new HashMap<>();
 
-        try {
-            try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM orders")) {
-                ResultSet resultSet = statement.executeQuery();
+        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM orders")) {
+            ResultSet resultSet = statement.executeQuery();
 
-                while (resultSet.next()) {
-                    int id = resultSet.getInt("id");
-                    boolean isAvailable = ((ResultSet) resultSet).getBoolean("is_available");
-                    boolean isDone = resultSet.getBoolean("is_done");
-                    Date dueDate = resultSet.getDate("due_date");
-                    int cakeId = resultSet.getInt("cake_id");
-                    double price = resultSet.getDouble("price");
-                    Cake cake= getCake(cakeId);
-                    Map<Number,Cake> cakes=new HashMap<>();
-                    cakes.put(cakeId,cake);
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                boolean isAvailable = resultSet.getBoolean("is_available");
+                boolean isDone = resultSet.getBoolean("is_done");
+                Date dueDate = resultSet.getDate("due_date");
+                int cakeId = resultSet.getInt("cake_id");
+                double price = resultSet.getDouble("price");
 
-                    Orders order = new Orders(isAvailable, price, isDone, dueDate, id, cakes);
-                    ordersMap.put(id, order);
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                Cake cake = getCake(cakeId);
+                cakes.put(cakeId, cake);
+
+                Orders order = new Orders(isAvailable, price, isDone, dueDate, id, new HashMap<>(cakes));
+                ordersMap.put(id, order);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } catch (Exception e) {
             System.err.println("[ERROR] getAllOrders: " + e.getMessage());
         }
@@ -385,6 +384,7 @@ public class DBRepository implements Repository{
     public Map getAll() {
         //check if order of cake
         Map<Integer, Orders> ordersMap= getAllOrders();
+        System.out.println(ordersMap);
         Map<Integer, Cake> cakesMap= getAllCakes();
         Map<Integer, Unique> all=new HashMap<>();
         all.putAll(ordersMap);

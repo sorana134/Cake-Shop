@@ -35,7 +35,14 @@ public class CakeController {
     public CakeController(Service service) {
 
         this.service = service;
+
     }
+    @FXML
+    private void initialize() {
+        // Call the method to populate the table for cakes
+        populateTable();
+    }
+
 
     @FXML
 
@@ -136,30 +143,18 @@ public class CakeController {
 
     public void populateTable() {
         cakeTableView.getItems().clear();
-        cakeTableView.getColumns().clear(); // Clear existing columns
-
+        cakeTableView.getColumns().clear();
         Map<Number, Cake> cakes = service.getAllCakes();
-
-        // Create columns for ID, Size, and Flavour
         TableColumn<Cake, Number> idColumn = new TableColumn<>("ID");
         TableColumn<Cake, String> sizeColumn = new TableColumn<>("Size");
         TableColumn<Cake, String> flavourColumn = new TableColumn<>("Flavour");
-
-        // Set cell value factories for each column
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         flavourColumn.setCellValueFactory(new PropertyValueFactory<>("flavour"));
 
-        // Enable editing for each column
-        idColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-        sizeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        flavourColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        // Add columns to the TableView
         cakeTableView.getColumns().addAll(idColumn, sizeColumn, flavourColumn);
 
-        // Make the table editable
-        cakeTableView.setEditable(true);
 
         // Add cakes to the TableView
         cakeTableView.getItems().addAll(cakes.values());
